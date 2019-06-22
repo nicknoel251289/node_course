@@ -1,0 +1,232 @@
+//const validator = require('validator');
+const fs = require('fs')
+const chalk = require('chalk')
+const notes = require('./notes.js') //the module.exports object becomes the value of the note variable 'aka modules'. 
+                                     //So notes is === exports. And exports, aka notes, has the add method on it.
+
+// fs.writeFileSync('notes.txt', 'This file was created by Node.js');
+// fs.appendFileSync('notes.txt', ' I am having trouble writing this text on my keyboard without looking.');
+
+const hello = 'hello'
+module.exports = {
+    hello
+};
+
+//console.log(notes.add(5,4));
+//console.log(notes); //notes is an object and has a method called add
+
+console.log(chalk.bgGreen.bold('START'))
+
+console.log(chalk.bgBlue.bold('BREAK 1 - process.mainModule'))
+console.log(process.mainModule)
+
+console.log(chalk.bgYellow.bold('BREAK 4 - module'))
+console.log(module)
+
+console.log(chalk.bgBlue.bold('BREAK 2 - process.mainModule.exports'))
+console.log(process.mainModule.exports)
+
+console.log(chalk.bgBlue.bold('BREAK 3 - process.mainModule.children'))
+console.log(process.mainModule.children)
+
+console.log(chalk.bgYellow.bold('BREAK 5 - module.children[0].exports'))
+console.log(module.children[0].exports)
+
+console.log(chalk.bgRed.bold('END'))
+
+
+//console.log(global); //accesses the global object - the global object is only global to its own file. IE global in app.js is ONLY for app.js
+//console.log(process); //process is a LARGE object with tons of properties and methods
+//console.log(process.mainModule); //all files(modules) have a process object. On the process object there is a mainModule property that has its own property 
+   //called children. The children property is an array containing all the submodules used; IE all our REQUIRED files: chalk, notes, fs, etc
+//console.log(process.argv[2]); //argv stands for arguments vector. In the case of Node.js, it's an array containing all arguments provided (we provide the arguments). 
+   //We provide arguments with every command we type into the console. IE node app.js Nick; node, app.js, and Nick are 3 commands and are listed in argv array
+//console.log(validator.isURL('nicknoel.design'));
+
+process.mainModule is a property that provides an alternative way of retrieving require.main.
+When a file is run/executed directly from Node.js, require.main is set as/to its module as in its
+value is the current module. That means that it is possible to determine whether a file has been 
+run directly by testing require.main === module. For a file foo.js, this will be true if run via 
+node foo.js, but false if run by require('./foo').
+
+require.main === module //returns true
+module in that above code is a variable that is passed to all modules that are loaded by node.js so that code basically says that if require.main is the current 
+module, then the current module is what was loaded from the command line
+
+_________________________________________________________________________________________________________________
+
+TOPIC: What is Module, module, require, and how do they work to create node modules/files for us
+
+//console.log(yargs); //yargs is a large object
+//console.log(yargs.argv); //...argv is a property on the yargs object that holds your commands in an array on the _ (underscore) property
+//console.log(process.mainModule);
+//console.log(chalk.bgMagenta.bold('BREAK'));
+
+// if(module === require.main && module === process.mainModule){
+//     console.log('THEY\'RE ALL FUCKING THE SAME THING'); //this returns true
+// }
+
+//////////////////////////////////////////////////////////////////////////
+
+// 1. Lowercase module is equal to Module 
+//    This is directly from the source code: var module = new Module(filename, parent);
+
+// 2. console.log(chalk.bgRed.bold(module.exports.a));
+//    this is NOT the same as _module_.exports because THIS is an actual instance of the template with 
+//    live data
+
+// 3. console.log(chalk.bgRed.bold(_module_.exports));
+//    This will NOT show you whats on your exports because its referenced to a template file, 
+//    so you are only going to get empty objects
+
+// 4. console.log(chalk.bgRed.bold(_module_));
+//    This is the template
+
+// The Module (with capital M) type found in module.js has two main roles inside of Node.js. 
+// First, it provides a foundation for all Node.js files/modules to build off of; so all new 
+// files/modules made, are based off of the Module function/template. 
+// Each file is given a new instance of this base Module on load, which 
+// persists even after the file has run. This is why we are able attach 
+// properties to module.exports and return them later as needed. This 
+// module object has an exports property which is why all instances of it
+// recieve it too.
+// http://fredkschott.com/post/2014/06/require-and-the-module-system/
+// https://medium.freecodecamp.org/requiring-modules-in-node-js-everything-you-need-to-know-e7fbd119be8
+// https://github.com/nodejs/node-v0.x-archive/blob/069dd07a1732c6a752773aaed9e8c18ab472375f/lib/module.js#L354
+// https://github.com/nodejs/node-v0.x-archive/blob/master/lib/repl.js where require is created i think
+
+_________________________________________________________________________________________________________________
+
+TOPIC: Node.js debugger
+
+open chrome to: chrome://inspect
+
+to use Node.js debugger, you simply use the word 'debugger' where ever you want the code 
+to stop. To execute it, you must pass the command line the 'inspect' command. An example 
+would be if you wanted to debug the 'app.js' file. In the command line you would write - 
+node inspect app.js read --title="hello" | node inspect <module> <argv command> <command line argument>
+
+If you want to restart the debugging program for whatever reason, you can simple use the 'retart' command. 
+This will give you a new link in the Chrome browser to use. The debugger is super useful for looking at how
+data is being passed around to all the modules, functions, and so forth.
+
+_________________________________________________________________________________________________________________
+
+
+How Async programming works
+
+const _module_ = require('module')
+
+console.log('Starting');
+
+// 1. setTimeout takes 2 arguments which are both required to be passed
+// 2. The first argument is a function
+// 3. the 2nd is for time in miliseconds; the amount of time you want to wait before the call
+//    back is executed.
+setTimeout(() => {
+    console.log('3 second timer')
+}, 3000)
+
+setTimeout(() => {
+    console.log('0 second timer');
+    
+}, 0)
+
+console.log('Stopping');
+
+//console.log(_module_);
+
+
+_________________________________________________________________________________________________________________
+
+NPM 
+
+from the root of the application, run: NPM init -y
+
+-y flag just answers yes to all the default questions
+
+to install a node module/package from command line, run: npm i npm_module_you_want@version
+example: npm i request@2.88.0
+
+_________________________________________________________________________________________________________________
+
+RUN THIS TO SEE HOW THE INTERPRETER BOUNCES AROUND
+
+console.log("ONE");
+debugger
+const sub = (a, b, min) => {
+    console.log("TWO");
+    debugger
+    console.log("THREE");
+    min(a - b)
+    debugger
+    console.log("FOUR");
+}
+debugger
+console.log("FIVE");
+sub(5, 2, (a) => {
+    debugger
+    console.log("SIX");
+    console.log(a);
+    debugger
+    console.log("SEVEN");
+})
+
+debugger
+console.log("EIGHT");
+sub(10, 5, (a) => {
+    console.log("NINE");
+    debugger
+    console.log("TEN");
+    console.log(a);
+    console.log("ELEVEN");
+    debugger
+})
+debugger
+console.log("DONE");
+
+_________________________________________________________________________________________________________________
+
+
+
+// 1. Reuqest is a function 
+// 2. It takes 2 arguments: 
+//        - 1ST is an options object which outlines what you would like to do and it is also where 
+//          we provide the URL and other info
+//              1. the only REQUIRE property is the URL propert; all else is optional
+//        - 2ND argument is a callback function to run once we actually have the response once the 
+//          data is available to use in our application
+//              1. This function will run when we have the weather data or if something went
+//                 wrong and we were unable to get the weather data (no network connection / wifi)
+//              2. This function gets called with 2 arguments; the first arg is an error (if there was 
+//                 one, otherwise unbdefined) and the second with the response where we can access
+//                 the response; this inbcludes all sorts of information. For us, the JSON data we
+//                 want access to is on the body property of our response variable. 
+//              3. There are other properties for getting other types of information (may or may not
+//                 be in JSON format)
+// request({ url: url, json: true}, (error, response) => {
+//     // const data = JSON.parse(response.body) // Target the JSON you want to parse, and pass it to the JSON.parse method. 
+//     // with the request module, we dont have to parse the json, if we pass it as part of the object in the request arguments
+
+//     if(error){
+//         console.log('Could not connect');
+//     }else if(response.body.error){
+//         console.log('Unable to find location');
+//     }else{
+//         let currently = response.body.currently
+//         let rain_percent = (currently.precipProbability / 1.00)*100
+//         console.log("Today " + response.body.daily.data[0].summary + " It is " + currently.temperature + " and there is a " + rain_percent + "% chance of rain")
+//     }
+// })
+
+// request({ url: geocodeURL, json: true}, (error, location) => {
+//     if(error){
+//         console.log('Cannot connect to weather API');  
+//     }else if(location.body.features.length === 0){
+//         console.log('Cannot find location');
+//     }else{
+//         let latitude = location.body.features[0].center[1]
+//         let longtitude = location.body.features[0].center[0]
+//         console.log(location.body.features[0].place_name + " is located at " + latitude + " deg latitude " + "and " + longtitude + " deg longtitude")
+//     }
+// })
