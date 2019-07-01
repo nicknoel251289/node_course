@@ -22,30 +22,23 @@ const forecast = require('./utils/forecast.js')
 
 let address = process.argv[2]
 
-if(!address){
+if (!address) {
     return console.log('No location was given');
-}else{
-    geoCode(address, (error, { longitude, latitude, location }) => {
-
-        if(error){
+} else {
+    geoCode(address, (error, { longitude, latitude, location, bodyObject }) => {
+        // console.log(bodyObject);
+        
+        if (error) {
             return console.log(error);
-        }else{
-            console.log(address, longitude, latitude, location);
-            
         }
-    
+
         forecast(longitude, latitude, (err, data) => {
-            if(err){
+            if (err) {
                 return console.log(err);
-            }else{
-                console.log(longitude, latitude); 
-                console.log(location);
-                console.log(data);
-                console.log(address);
-                
+            } else {
+                console.log("The coordinates are: " + longitude, latitude + ' and your location is ' + location + ' with todays weather being ' + data);
             }
         })
-    
+
     })
 }
-
