@@ -25,18 +25,18 @@ let address = process.argv[2]
 if (!address) {
     return console.log('No location was given');
 } else {
-    geoCode(address, (error, { longitude, latitude, location, bodyObject }) => {
+    geoCode(address, (error, { long, latitude, location, bodyObject }) => {
         // console.log(bodyObject);
         
         if (error) {
             return console.log(error);
         }
 
-        forecast(longitude, latitude, (err, data) => {
+        forecast(long, latitude, (err, data) => {
             if (err) {
                 return console.log(err);
             } else {
-                console.log("The coordinates are: " + longitude, latitude + ' and your location is ' + location + ' with todays weather being ' + data);
+                console.log("The coordinates are: " + long, latitude + ' and your location is ' + location + ' with todays weather being ' + data);
             }
         })
 

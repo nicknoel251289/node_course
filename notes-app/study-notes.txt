@@ -44,14 +44,17 @@ console.log(chalk.bgRed.bold('END'))
 //console.log(validator.isURL('nicknoel.design'));
 
 process.mainModule is a property that provides an alternative way of retrieving require.main.
-When a file is run/executed directly from Node.js, require.main is set as/to its module as in its
+When a file is run/executed directly from Node.js, require.main is set as/to its module as in require.mains
 value is the current module. That means that it is possible to determine whether a file has been 
-run directly by testing require.main === module. For a file foo.js, this will be true if run via 
-node foo.js, but false if run by require('./foo').
+run directly by testing require.main === module. For a file, ex. foo.js, this will be true if run via commandline
+node foo.js, but false if run (from another file(**check**)) by using require('./foo').
 
 require.main === module //returns true
-module in that above code is a variable that is passed to all modules that are loaded by node.js so that code basically says that if require.main is the current 
+module in the line of code right above us is a free variable and is a reference to the object representing the current module. (Does reference to an object make that
+variable an object? (I think so)) that is passed to all modules/files that are loaded by node.js so that code basically says that if require.main is the current 
 module, then the current module is what was loaded from the command line
+
+variable references - https://stackoverflow.com/questions/6605640/javascript-by-reference-vs-by-value
 
 _________________________________________________________________________________________________________________
 
@@ -84,11 +87,11 @@ TOPIC: What is Module, module, require, and how do they work to create node modu
 
 // The Module (with capital M) type found in module.js has two main roles inside of Node.js. 
 // First, it provides a foundation for all Node.js files/modules to build off of; so all new 
-// files/modules made, are based off of the Module function/template. 
+// files/modules made, are  an instance/based off of the Module function/template. 
 // Each file is given a new instance of this base Module on load, which 
 // persists even after the file has run. This is why we are able attach 
 // properties to module.exports and return them later as needed. This 
-// module object has an exports property which is why all instances of it
+// module object has an exports property which is why all instances of it (Module template)
 // recieve it too.
 // http://fredkschott.com/post/2014/06/require-and-the-module-system/
 // https://medium.freecodecamp.org/requiring-modules-in-node-js-everything-you-need-to-know-e7fbd119be8
@@ -193,7 +196,7 @@ ________________________________________________________________________________
 // 2. It takes 2 arguments: 
 //        - 1ST is an options object which outlines what you would like to do and it is also where 
 //          we provide the URL and other info
-//              1. the only REQUIRE property is the URL propert; all else is optional
+//              1. the only REQUIRE property is the URL property; all else is optional
 //        - 2ND argument is a callback function to run once we actually have the response once the 
 //          data is available to use in our application
 //              1. This function will run when we have the weather data or if something went
