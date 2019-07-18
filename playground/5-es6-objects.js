@@ -53,13 +53,18 @@ const {label, stock:productStock, rating = 5} = product
 // 9. Lastly, in the case of rating, if no property is defined in product, it will use the default value
 //    we gave it, which is 5
 
-const transaction = (type, { label, price, any}) => {
+const transaction = (type, { label, price, any }) => {
     // 1. Because we are passing an object as an argument below when we call transaction, we can destructure
     //    it by simply creating making the object in our arguments like we do above
     console.log(label, price, any);
     // 2. When you do make the object, the actual key:value pairs must match with the object passed. It's not
     //    like passing function arguments where the argument/variable can be renamed and the value remanes
     //    the same
+    // 3. The results of calling transaction would give you 'Red notebook, 3, undefined' | any is not a property
+    //    in product and therefore is not defined. when an object is passed as an argument, the properties must 
+    //    exist within the object
 }
 
 transaction('order', product)
+
+// TL:DR you can pass an object as an argument and get the objects properties directly without dot notation
