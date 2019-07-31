@@ -197,7 +197,7 @@ ________________________________________________________________________________
 //        - 1ST is an options object which outlines what you would like to do and it is also where 
 //          we provide the URL and other info
 //              1. the only REQUIRE property is the URL property; all else is optional
-//        - 2ND argument is a callback function to run once we actually have the response once the 
+            //        - 2ND argument is a callback function to run once we actually have the response once the 
 //          data is available to use in our application
 //              1. This function will run when we have the weather data or if something went
 //                 wrong and we were unable to get the weather data (no network connection / wifi)

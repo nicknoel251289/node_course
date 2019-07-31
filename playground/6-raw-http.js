@@ -2,7 +2,7 @@ const https = require('https')
 let url = 'https://api.darksky.net/forecast/79b174580d596285e08f2800636932ad/-72.588223,42.102166' 
 
 const request = https.request(url, (response) => {
-
+    
     let data = ''
 
     // 1. requesting data from url/api
@@ -11,7 +11,12 @@ const request = https.request(url, (response) => {
     response.on('data', (chunk) => {
 
         // 1. concatenate the chunks
+        // 2. function continues to listen until all chunks have been loaded. (must be aynchronous as well)
         data = data + chunk.toString()
+
+    console.log("----------BREAK----------BREAK----------BREAK----------");
+    console.log(data);
+    console.log("----------BREAK----------BREAK----------BREAK----------");
     })
 
     // 1. after all data has come through, this will run a single time once things are done.
@@ -22,6 +27,8 @@ const request = https.request(url, (response) => {
         //console.log(data); //returns 1 large string
         const body = JSON.parse(data)
         console.log(body);
+        // console.log("----------BREAK----------BREAK----------BREAK----------");
+        // console.log(response); //return 1 large object. Response is === to an object
         
     })
     
