@@ -1,10 +1,61 @@
 const path = require('path')
+
 const express = require('express')
 
-// 1. express is a function as opposed to an object
+const hbs = require('hbs')
+// app.get('/help', (req, res) => {
+//     res.render('help', {
+//         title: 'HELP',
+//         author: 'Nick Noel',
+//         helpMessage: 'You are screwed'
+//     })
+// })
+
+// 1. At runtime, Express is listening for someone to land on a specific route, like "https://awda/HELP" 
+// 2. Depending on what route a user lands on, in this case /help, app.js will set all key/value pairs as variables for that specific 
+//    route/hbs file, as a response.
+// 3. Therefore, the arguments inside the hbs file, like {{title}}, will look up the title property value set in app.js by res.render object, 
+//    and will recieve the value associated with it
+// 4. I am assuming that the variables defined by res.render({}) object are only scoped to the file path specified by app.GET. This is why your 
+//    partial is able to grab the value and not mix it up with a title defined in another app.GET. 
+// 5. Your partials are only populated with with whatever the current route is being rendered. IE if I am on .../help, the other routes are
+//    not being rendered and therefore their key value pairs are not being set or passed to the partials
+// 6. Lastly, after all values have been push to their proper places, HBS will parse the HBS into actual HTML to be rendered by the browser
+
+// 1. HBS is a module object that is automatically created for you
+// 2. This object compiles. It takes HTML/handlebar-expressions and compiles it into JS functions
+// 3. This function takes an object - your data - and returns an HTML string with the object 
+//     properties values inserted (interpolated) You end up with a string (HTML) that has values 
+//     from the object properties inserted
 
 const app = express()
-console.log(app + '!');
+// https://www.sohamkamani.com/blog/2018/05/30/understanding-how-expressjs-works/
+// 1. express is a function as opposed to an object and this statement creates an new express application
+// 2. The createApplication() function is the default export which we see as express() function call
+//    and the important thing to remember is it's a signtature of `function(req, res, next)`
+
+// 3. function createApplication() {
+   
+        // var app = function(req, res, next) {
+            // app.handle(req, res, next);
+        // };
+
+    // ...
+
+        // The `mixin` function assigns all the methods of `proto` as methods of `app`
+        // One of the methods which it assigns is the `get` method which is used in the example
+
+        // mixin(app, proto, false);
+
+    // ...
+
+    // return app;
+
+    // }
+
+// 4. logging app returns | function (req, res, next) { app.handle(req, res, next)}
+
+console.log(hbs.handlebars.HandlebarsEnvironment + '!');
 
 // 1. Express function does not take any arguments
 // 2. Express has methods
@@ -17,39 +68,51 @@ console.log(app + '!');
 // app.com/help - this is the 'help route'
 // app.com/about
 
+
 //console.log(__dirname)
 //console.log(path.join(__dirname, '../public')) how we can CUSTOMIZE FILE PATHS
 
-const publicPath = path.join(__dirname, '../public')
+const publicPath = path.join(__dirname, '../public') //__dirname === src folder (app.js lives there which is what file we are in)
 // 1. The path.join() method joins the specified path segments into one path.
 //console.log(publicPath);
-
-
-app.set('view engine', 'hbs')
-// 1. Setting up our HBS engine
-// 2. app.SET allows you to set a value for a given express setting and there are a few. 
-// 3. We have a KEY, SETTING NAME and a VALUE - the value we want to set for the SETTING (ex. hbs)
-// 4. To set up our view engine like Express, the value is 'view engine' (IT IS IMPORTANT THIS IS SPELLED EXACTLY CORRECT)
-// 5. View Engine is responsible for rendering the view into html form to the browser (https://stackoverflow.com/questions/8308485/what-is-view-engine-what-does-it-actually-do)
-
-app.set('views', path.join(__dirname, '../views')) 
+const viewsPath = path.join(__dirname, '../templates/views')
+//app.set('views', path.join(__dirname, '../views')) 
 // 1. if you run the node app from inside the src/ folder, it's looking for src/views/ folder. If you run the Node app from the root of 
 //    the project, it's looking for views/ which does exist
 //    a. Error: Failed to lookup view "index" in views directory "C:\Users\nickn\OneDrive\Desktop\Node-Course\web-server\src\views"
+const partialsPath = path.join(__dirname, '../templates/partials')
+// 1. Partials are parts of HTML that we can use as pieces
+
+app.set('view engine', 'hbs')
+// 1. Setting up our HBS engine. Telling Express to use HBS to parse and compile
+// 2. app.SET allows you to set a value for a given express setting and there are a few. 
+// 3. To set up our view engine like Express, the value is 'view engine' (IT IS IMPORTANT THIS IS SPELLED EXACTLY CORRECT)
+// 4. View Engine is responsible for rendering the view into html form to the browser (https://stackoverflow.com/questions/8308485/what-is-view-engine-what-does-it-actually-do)
+
+app.set('views', viewsPath)
+// 1. SETting our viewsPath to Express's views property | views: viewPath
+
+hbs.registerPartials(partialsPath) // loads all partial templates in given filepath and registers them for use
+// 1. registering our partials to be compiled by HBS
+// The partials path variable contains the path that handlebars module needs (hbs uses handlebars but ties it with Expressa)
+// *** nodemon src/app.js -e js,hbs *** // this is how you add other files/extensions that nodemon should watch
+//https://www.sitepoint.com/a-beginners-guide-to-handlebars/
+console.log(hbs.registerPartials + '!');
+
 
 app.use(express.static(publicPath))
-
 // 1. Express.static is a function and we are calling it and passing its return value into app.USE
-// 2. USE takes the path that we want to use as an argument. Essentially we are passing out HTML file
+// 2. USE takes the path that we want to use as an argument. Essentially we are passing our HTML file
 //    and using its contents
 
 app.get('', (req, res) => {
     res.render('index', {
         title: 'WEATHER APP',
-        subtitle: 'by Nick Noel'
+        author: 'by Nick Noel'
     })
 })
-// 1. When a person hits this route endpoint via the browser creating an HTTP GET reuqest, we want our web server (Express) we want to respond by rendering our index.hbs
+// 1. When a person hits this route endpoint (typicall a file path) via the browser creating an HTTP GET reuqest, we want our web 
+//    server (Express) to respond by rendering our index.hbs
 // 2. Express will send (res) the index page we are rendering
 // 3. Express listens for someone to land on this route/endpoint
 // 4. https://www.ntu.edu.sg/home/ehchua/programming/webprogramming/HTTP_Basics.html
@@ -57,14 +120,29 @@ app.get('', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about', {
         title: 'ABOUT',
-        subtitle: 'My family'
+        author: 'My family'
     })
 })
 
 app.get('/help', (req, res) => {
     res.render('help', {
         title: 'HELP',
+        author: 'Nick Noel',
         helpMessage: 'You are screwed'
+    })
+})
+
+app.get('/help/*', (req, res) => {
+    res.render('404', {
+        title: '404',
+        errorMessage: 'Could not find the page you were looking for'
+    })
+})
+
+app.get('*', (req, res) => {
+    res.render('404', {
+        title: '404',
+        errorMessage: 'Could not find the page you were looking for'
     })
 })
 

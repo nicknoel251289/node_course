@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-    <h1>{{title}}</h1>
+    {{>header}}  <!-- carrot is how we link to header.hbs partial || commenting out doesn't REALLY comment out hbs bracket syntax -->
     <p>{{helpMessage}}</p>
+    {{>footer}}
 </body>
 </html>

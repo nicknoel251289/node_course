@@ -9,7 +9,12 @@
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-    <h1>{{title}}</h1>
-    <p>{{subtitle}}</p>
+    <div>
+        {{>header}}
+        <p>{{subtitle}}</p>
+        <p>use this site to get your weather</p>
+    </div>
+    
+    {{>footer}}
 </body>
 </html>
