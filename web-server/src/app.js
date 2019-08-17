@@ -55,7 +55,7 @@ const app = express()
 
 // 4. logging app returns | function (req, res, next) { app.handle(req, res, next)}
 
-console.log(hbs.handlebars.HandlebarsEnvironment + '!');
+//console.log(hbs.handlebars.HandlebarsEnvironment + '!');
 
 // 1. Express function does not take any arguments
 // 2. Express has methods
@@ -97,7 +97,7 @@ hbs.registerPartials(partialsPath) // loads all partial templates in given filep
 // The partials path variable contains the path that handlebars module needs (hbs uses handlebars but ties it with Expressa)
 // *** nodemon src/app.js -e js,hbs *** // this is how you add other files/extensions that nodemon should watch
 //https://www.sitepoint.com/a-beginners-guide-to-handlebars/
-console.log(hbs.registerPartials + '!');
+//console.log(hbs.registerPartials + '!');
 
 
 app.use(express.static(publicPath))
@@ -107,7 +107,7 @@ app.use(express.static(publicPath))
 
 app.get('', (req, res) => {
     res.render('index', {
-        title: 'WEATHER APP',
+        title: 'HOME',
         author: 'by Nick Noel'
     })
 })
@@ -131,6 +131,21 @@ app.get('/help', (req, res) => {
         helpMessage: 'You are screwed'
     })
 })
+
+app.get('/weather', (req, res) => {
+    if(!req.query.location){
+        return res.send({
+            error: "You must enter a location"
+        })
+    }
+        res.render('weather', {
+            title: 'WEATHER',
+            author: 'Nick Noel',
+            location: req.query.location
+        })
+})
+
+// Info about REQ and REQ.QUERY https://alligator.io/nodejs/req-object-in-expressjs/
 
 app.get('/help/*', (req, res) => {
     res.render('404', {

@@ -1,22 +1,25 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
+    
     <!-- CSS -->
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-    
+
     <div class="main_content">
         {{>header}}
         <p>{{subtitle}}</p>
-        <img class="portrait" src="img/family.jpg" alt="My Family">
+        <p>Your location, {{location}}, is 76 deg and partially cloudy.</p>
+        <div>
+            <h2>The RES is: </h2> <br />{{res}}<br />
+            <h2>The RES-QUERY is: </h2> <br />{{resQuery}}<br />
+        </div>
     </div>
-
+    
     {{>footer}}
 </body>
 </html>

@@ -5,18 +5,19 @@ body {
     max-width: 650px;
     margin: 0 auto;
     padding: 0 16px;
+
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
-footer {
-    color: #888888;
-    border-top: 1px solid #eeeeee;
-    margin-top: 16px;
-    padding: 16px 0;
+.main_content {
+    flex-grow: 1;
 }
 header {
     margin-top: 16px;
     margin-bottom: 48px;
 }
-header a {
+nav a {
     color: #888888;
     margin-right: 16px;
     text-decoration: none;
@@ -27,4 +28,10 @@ h1 {
 }
 .portrait {
     width: 250px;
+}
+footer {
+    color: #888888;
+    border-top: 1px solid #cccccc;
+    margin-top: 16px;
+    padding: 16px 0;
 }
